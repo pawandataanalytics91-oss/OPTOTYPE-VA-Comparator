@@ -744,7 +744,7 @@ $("#csvBtn").onclick = () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "Dr_Shroffs_Charity_Eye_Hospital_Audit_" + new Date().toISOString().slice(0, 10) + ".tsv";
+  a.download = "Dr_Shroffs_Charity_Eye_Hospital_Audit_" + new Date().toISOString().slice(0, 10) + ".xls";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
