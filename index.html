@@ -718,7 +718,7 @@ $("#csvBtn").onclick=()=>{
   const blob=new Blob(["\uFEFF"+tsv],{type:"text/tab-separated-values;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
-  a.href=url;a.download="Dr_Shroffs_Charity_Eye_Hospital_Audit_"+new Date().toISOString().slice(0,10)+".csv";
+  a.download="Dr_Shroffs_Charity_Eye_Hospital_Audit_"+new Date().toISOString().slice(0,10)+".tsv";
   document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),500);
   const b=$("#csvBtn");b.textContent="✓ CSV DOWNLOADED";setTimeout(()=>b.textContent=" EXPORT CSV",1400);
