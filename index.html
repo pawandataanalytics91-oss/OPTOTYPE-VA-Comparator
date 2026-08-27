@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Shroff's Charity Eye Hospital — OPTOTYPE VA Comparator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F6F1; --grid:#E0E8DF; --ink:#0C1F17; --ink2:#4E6157; --ink3:#8A9A90;
+  --grn:#0E7A56; --grn-br:#17A273; --lime:#6FF0AE; --red:#C8402C; --amber:#DE9E2E;
+  --panel:#0B1F17; --panel2:#0F2A20; --card:#FFFFFF; --line:#CBD8CC;
+  --who-blue:#1976D2; --who-blue-light:#E3F2FD; --who-blue-dark:#0D47A1;
+  --disp:"Bricolage Grotesque", sans-serif; --body:"Instrument Sans", sans-serif; --mono:"IBM Plex Mono", monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body); color:var(--ink); background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px, transparent 1px),linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:34px 34px; min-height:100vh; overflow-x:hidden;
+}
+body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(900px 480px at 12% -6%, rgba(23,162,115,.14), transparent 60%),
+             radial-gradient(700px 420px at 96% 8%, rgba(222,158,46,.10), transparent 60%);}
+::selection{background:var(--grn); color:#fff}
+.frame{position:relative; z-index:1; max-width:1260px; margin:0 auto; padding:0 26px}
+/* Top Bar */
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+  padding:14px 0; border-bottom:2px solid var(--ink); font-family:var(--mono); font-size:12px; letter-spacing:.08em;}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; color:var(--ink)}
+.brand em{font-style:normal; color:var(--ink2); font-weight:400}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--grn-br);animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(23,162,115,.45)}70%{box-shadow:0 0 0 10px rgba(23,162,115,0)}100%{box-shadow:0 0 0 0 rgba(23,162,115,0)}}
+.tb-right{display:flex; gap:22px; color:var(--ink2)}
+.tb-right b{color:var(--ink); font-weight:600}
+/* Masthead - FIXED STRUCTURE */
+.masthead{display:grid; grid-template-columns:1.25fr .75fr; gap:34px; align-items:stretch; padding:54px 0 40px}
+.kicker{font-family:var(--mono); font-size:12px; letter-spacing:.28em; color:var(--grn); font-weight:600; margin-bottom:16px}
+.kicker span{color:var(--red)}
+h1{font-family:var(--disp); font-weight:800; font-size:clamp(42px,6.4vw,82px); line-height:.98; letter-spacing:-.02em}
+h1 .amp{color:var(--red); font-weight:500}
+h1 .outline{color:transparent; -webkit-text-stroke:2px var(--ink); display:inline-block}
+.lede{margin-top:20px; max-width:56ch; font-size:16.5px; line-height:1.55; color:var(--ink2)}
+.lede b{color:var(--ink)}
+.facts{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; color:var(--ink2)}
+.facts span{border:1px solid var(--line); background:#fff; padding:6px 11px; border-radius:999px}
+.facts b{color:var(--grn)}
+/* Masthead Right Column - Chart + Snellen side by side */
+.mast-right{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch}
+.mast-chart{text-align:center; padding:22px 10px 16px; background:#fff; border:2px solid var(--ink); border-radius:6px; box-shadow:6px 6px 0 rgba(12,31,23,.14); position:relative; align-self:start}
+.mast-chart::after{content:""; position:absolute; left:14%; right:14%; top:74%; border-bottom:2px solid var(--red)}
+.mrow{font-family:var(--disp); font-weight:800; letter-spacing:.32em; text-indent:.32em; color:var(--ink); opacity:0; filter:blur(9px); animation:focusIn .9s forwards}
+.mrow small{display:block; font-family:var(--mono); font-weight:400; font-size:9px; letter-spacing:.14em; color:var(--ink3); margin:3px 0 7px}
+@keyframes focusIn{to{opacity:1; filter:blur(0)}}
+.mast-chart figcaption{font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--ink3); margin-top:12px}
+/* Masthead Info Panel (Snellen Explanation) */
+.mast-info{background:#fff; border:2px solid var(--ink); border-radius:6px; padding:16px; box-shadow:6px 6px 0 rgba(12,31,23,.14); display:flex; flex-direction:column; justify-content:center; align-self:start}
+.mast-info h3{font-family:var(--disp); font-weight:700; font-size:15px; color:var(--ink); margin-bottom:10px; padding-bottom:7px; border-bottom:2px solid var(--grn)}
+.mast-info h3 span{font-family:var(--mono); font-size:9px; color:var(--ink3); letter-spacing:.15em; display:block; margin-top:3px; font-weight:400}
+.snellen-explain{display:flex; flex-direction:column; gap:7px}
+.snellen-row{display:grid; grid-template-columns:55px 1fr; gap:8px; align-items:center; padding:7px 9px; border-radius:6px; background:#F8FAF8; border-left:3px solid var(--grn)}
+.snellen-row.bad{border-left-color:var(--red); background:#FDF8F7}
+.snellen-row.warn{border-left-color:var(--amber); background:#FDFBF5}
+.snellen-val{font-family:var(--disp); font-weight:800; font-size:16px; color:var(--ink)}
+.snellen-desc{font-size:11px; line-height:1.4; color:var(--ink2)}
+.snellen-desc b{color:var(--ink)}
+.snellen-desc small{display:block; font-family:var(--mono); font-size:8px; color:var(--ink3); margin-top:2px; letter-spacing:.05em}
+.mast-info-footer{margin-top:10px; padding-top:9px; border-top:1px dashed var(--line); font-family:var(--mono); font-size:9px; color:var(--ink3); line-height:1.5; letter-spacing:.03em}
+.mast-info-footer b{color:var(--grn)}
+/* Quick Reference Panel */
+.ref-panel{background:linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border:2px solid var(--who-blue); border-radius:12px; padding:24px; margin-bottom:40px; box-shadow:0 4px 20px rgba(25,118,210,.15)}
+.ref-head{display:flex; align-items:center; gap:10px; font-family:var(--disp); font-weight:700; font-size:18px; color:var(--who-blue-dark); margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid var(--who-blue)}
+.ref-head::before{content:"📊"; font-size:22px}
+.ref-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+/* WHO Stats */
+.who-stats{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.who-card{background:var(--who-blue); color:#fff; border-radius:10px; padding:16px; text-align:center; transition:transform .2s ease, box-shadow .2s ease}
+.who-card:hover{transform:translateY(-3px); box-shadow:0 8px 20px rgba(25,118,210,.3)}
+.who-card .num{font-family:var(--disp); font-weight:800; font-size:28px; line-height:1; margin-bottom:6px}
+.who-card .icon{font-size:24px; margin-bottom:6px}
+.who-card .desc{font-size:11px; line-height:1.4; opacity:.95}
+/* VA Reference Table */
+.va-ref{background:#fff; border-radius:10px; padding:14px; border:1.5px solid var(--who-blue)}
+.va-ref h3{font-family:var(--disp); font-weight:700; font-size:14px; color:var(--who-blue-dark); margin-bottom:10px; padding-bottom:8px; border-bottom:1.5px solid var(--line)}
+.va-ref table{width:100%; border-collapse:collapse; font-size:11px}
+.va-ref th,.va-ref td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--line)}
+.va-ref th{background:var(--who-blue-light); color:var(--who-blue-dark); font-weight:600; font-family:var(--mono); font-size:10px}
+.va-ref td{font-family:var(--mono); color:var(--ink)}
+.va-ref tr.highlight{background:#FFF9C4; font-weight:600}
+.va-ref tr.highlight td{color:var(--grn)}
+/* WHO Categories */
+.who-cats{margin-top:12px}
+.who-cats h3{font-family:var(--disp); font-weight:700; font-size:14px; color:var(--who-blue-dark); margin-bottom:10px; padding-bottom:8px; border-bottom:1.5px solid var(--line)}
+.cat-row{display:grid; grid-template-columns:140px 1fr; gap:8px; align-items:center; padding:6px 8px; border-radius:6px; margin-bottom:4px; font-size:11px}
+.cat-row:nth-child(even){background:rgba(255,255,255,.5)}
+.cat-label{font-family:var(--mono); font-weight:600; font-size:10px; letter-spacing:.05em}
+.cat-range{font-family:var(--mono); font-size:10px; color:var(--ink2)}
+.cat-normal{border-left:4px solid var(--grn)}
+.cat-mild{border-left:4px solid #4CAF50}
+.cat-moderate{border-left:4px solid var(--amber)}
+.cat-severe{border-left:4px solid #FF9800}
+.cat-blind{border-left:4px solid var(--red)}
+/* Quick Facts */
+.quick-facts{margin-top:14px; padding:12px; background:#fff; border-radius:8px; border-left:4px solid var(--who-blue)}
+.quick-facts h4{font-family:var(--disp); font-weight:700; font-size:12px; color:var(--who-blue-dark); margin-bottom:8px}
+.quick-facts ul{list-style:none; padding:0}
+.quick-facts li{font-size:11px; line-height:1.5; color:var(--ink2); padding:4px 0 4px 18px; position:relative}
+.quick-facts li::before{content:"💡"; position:absolute; left:0; top:4px; font-size:10px}
+/* Layout */
+.layout{display:grid; grid-template-columns:.92fr 1.08fr; gap:26px; align-items:start; padding-bottom:60px}
+.col{display:flex; flex-direction:column; gap:18px}
+.col-title{font-family:var(--mono); font-size:11px; letter-spacing:.3em; color:var(--ink2); display:flex; align-items:center; gap:12px}
+.col-title::after{content:""; flex:1; border-top:1px dashed var(--ink3)}
+.card{background:var(--card); border:1.5px solid var(--line); border-radius:10px; padding:20px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
+.card:hover{transform:translateY(-2px); border-color:#AFC6B4; box-shadow:0 10px 26px -14px rgba(12,31,23,.28)}
+.card h2{font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:-.01em; margin-bottom:4px}
+.card .sub{font-size:12.5px; color:var(--ink2); margin-bottom:16px}
+/* Fields */
+.field{display:flex; flex-direction:column; gap:6px}
+.field label{font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; color:var(--ink2); text-transform:uppercase}
+.field input,.field select{font-family:var(--body); font-size:14px; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:7px; padding:9px 11px; outline:none; transition:border-color .2s, box-shadow .2s}
+.field input:focus,.field select:focus{border-color:var(--grn-br); box-shadow:0 0 0 3px rgba(23,162,115,.18)}
+.patient-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px 14px}
+.seg{display:flex; border:1.5px solid var(--line); border-radius:7px; overflow:hidden}
+.seg button{flex:1; padding:9px 0; font-family:var(--mono); font-size:12.5px; font-weight:600; letter-spacing:.06em; background:#fff; color:var(--ink2); border:none; cursor:pointer; transition:background .2s,color .2s}
+.seg button + button{border-left:1.5px solid var(--line)}
+.seg button:hover{background:#EDF4EE; color:var(--ink)}
+.seg button.on{background:var(--ink); color:#fff}
+.format-row{display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap}
+.seg.fmt button{padding:9px 16px}
+.unit{display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--ink2)}
+.unit .seg button{padding:7px 12px; font-size:11.5px}
+/* VA Cards */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.va-card{position:relative; overflow:hidden}
+.va-card::before{content:""; position:absolute; inset:0 0 auto 0; height:5px}
+.va-card.pre::before{background:repeating-linear-gradient(-45deg,var(--red) 0 8px, transparent 8px 14px)}
+.va-card.post::before{background:repeating-linear-gradient(-45deg,var(--grn-br) 0 8px, transparent 8px 14px)}
+.va-head{display:flex; justify-content:space-between; align-items:baseline; margin:6px 0 12px}
+.va-head h3{font-family:var(--disp); font-weight:800; font-size:15px; letter-spacing:.04em}
+.va-head small{font-family:var(--mono); font-size:10px; color:var(--ink3); letter-spacing:.14em}
+.va-card.pre .va-head h3{color:var(--red)} .va-card.post .va-head h3{color:var(--grn)}
+.va-input{width:100%; font-family:var(--mono); font-weight:600; font-size:30px; text-align:center; padding:12px 8px; border:2px solid var(--line); border-radius:99px; color:var(--ink); background:#FBFDFB; outline:none; transition:border-color .2s, box-shadow .2s}
+.va-input:focus{border-color:var(--grn-br); box-shadow:0 0 0 4px rgba(23,162,115,.16)}
+.va-input.err{border-color:var(--red); animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
+.chip{font-family:var(--mono); font-size:11px; font-weight:500; padding:5px 9px; border-radius:999px; border:1px solid var(--line); background:#fff; color:var(--ink2); cursor:pointer; transition:all .18s ease}
+.chip:hover{transform:translateY(-2px); border-color:var(--grn-br); color:var(--grn); box-shadow:0 4px 10px -6px rgba(14,122,86,.5)}
+.chip.sp{border-style:dashed; color:var(--ink3)}
+.va-foot{margin-top:12px; font-family:var(--mono); font-size:11px; color:var(--ink3); letter-spacing:.05em}
+.va-foot b{color:var(--ink); font-weight:600}
+.actions{display:flex; gap:10px}
+.btn{flex:1; font-family:var(--mono); font-size:12.5px; font-weight:600; letter-spacing:.1em; padding:12px; border-radius:8px; border:2px solid var(--ink); background:#fff; color:var(--ink); cursor:pointer; transition:all .2s ease}
+.btn:hover{background:var(--ink); color:#fff; transform:translateY(-2px); box-shadow:0 8px 18px -10px rgba(12,31,23,.6)}
+.btn:active{transform:translateY(0)}
+.btn.primary{background:var(--grn); border-color:var(--grn); color:#fff}
+.btn.primary:hover{background:#0A5F43}
+.tip{font-size:12px; color:var(--ink3); line-height:1.5}
+.tip code{font-family:var(--mono); background:#E7EFE7; padding:1px 6px; border-radius:4px; font-size:11px}
+/* Device Display */
+.display{position:relative; overflow:hidden; background:var(--panel); color:var(--lime); border-radius:12px; border:1.5px solid #0A3A28; padding:22px 24px; background-image:radial-gradient(rgba(111,240,174,.07) 1px, transparent 1px); background-size:14px 14px}
+.display::after{content:""; position:absolute; left:0; right:0; height:60px; top:-60px; pointer-events:none; background:linear-gradient(180deg, transparent, rgba(111,240,174,.09), transparent); animation:scan 5.5s linear infinite}
+@keyframes scan{to{top:110%}}
+.disp-top{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px}
+.disp-lab{font-family:var(--mono); font-size:10.5px; letter-spacing:.3em; color:#6E9C85}
+.pill{font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:.14em; padding:6px 14px; border-radius:999px; border:1.5px solid; transition:all .4s}
+.pill.up{color:#8DF5BE; border-color:#2E7D5B; background:rgba(23,162,115,.14)}
+.pill.flat{color:#F2C879; border-color:#8A6A24; background:rgba(222,158,46,.12)}
+.pill.down{color:#FF9C8B; border-color:#8A3626; background:rgba(200,64,44,.15)}
+.disp-main{display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center}
+.bignum{font-family:var(--disp); font-weight:800; font-size:clamp(56px,5.4vw,76px); line-height:1; letter-spacing:-.02em; color:#9CF7C8; text-shadow:0 0 26px rgba(111,240,174,.35); transition:color .4s}
+.bignum.neg{color:#FF9C8B; text-shadow:0 0 26px rgba(255,120,100,.3)}
+.bignum-lab{font-family:var(--mono); font-size:10.5px; letter-spacing:.26em; color:#6E9C85; margin-top:8px}
+.bignum-sub{font-family:var(--mono); font-size:12px; color:#7FBE9E; margin-top:4px}
+.gauge{width:180px}
+.disp-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:#123626; border:1px solid #123626; border-radius:8px; overflow:hidden; margin-top:18px}
+.dg{background:var(--panel2); padding:11px 14px}
+.dg small{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.22em; color:#5F8A73; margin-bottom:5px}
+.dg span{font-family:var(--mono); font-size:15px; font-weight:600; color:#BFF3D6}
+.disp-tags{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px}
+.dtag{font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:.08em; padding:9px 12px; border-radius:8px; border:1.5px solid #1E4634; color:#BFF3D6; background:var(--panel2); transition:all .4s}
+.dtag small{display:block; font-size:9px; letter-spacing:.2em; color:#5F8A73; margin-bottom:4px}
+.dtag.up{border-color:#2E7D5B; color:#8DF5BE; background:rgba(23,162,115,.14)}
+.dtag.flat{border-color:#8A6A24; color:#F2C879; background:rgba(222,158,46,.12)}
+.dtag.down{border-color:#8A3626; color:#FF9C8B; background:rgba(200,64,44,.15)}
+/* Visual Summary */
+.viz h2 span, .report-card h2 span, .log-card h2 span{font-family:var(--mono); font-weight:400; font-size:11px; color:var(--ink3); letter-spacing:.18em; margin-left:8px}
+.cmp{position:relative; margin-top:16px; border:2px solid var(--ink); border-radius:10px; overflow:hidden; aspect-ratio:16/10; --x:50; cursor:ew-resize}
+.cmp-layer{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; transition:filter .6s ease}
+.cmp-a{background:linear-gradient(rgba(200,64,44,.05),rgba(200,64,44,.05)),#FBFCFA}
+.cmp-b{clip-path:inset(0 0 0 calc(var(--x)*1%)); background:linear-gradient(rgba(23,162,115,.06),rgba(23,162,115,.06)),#FBFCFA}
+.mini-chart{width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px}
+.mcr{font-family:var(--disp); font-weight:800; letter-spacing:.32em; text-indent:.32em; line-height:1.15; color:var(--ink)}
+.mcl{font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:#9AA89E; margin:2px 0 5px}
+.mred{width:56%; border-top:2px solid var(--red); margin:0 0 6px}
+.mcap{font-family:var(--mono); font-size:9px; letter-spacing:.24em; color:#9AA89E; margin-top:8px}
+.cmp-handle{position:absolute; top:0; bottom:0; left:calc(var(--x)*1%); width:0; border-left:2px dashed var(--ink); z-index:3}
+.cmp-handle::before{content:""; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:38px; height:38px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; box-shadow:0 6px 16px rgba(12,31,23,.35)}
+.cmp input[type=range]{position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:ew-resize; z-index:4; margin:0}
+.cmp:focus-within .cmp-handle::before{box-shadow:0 0 0 4px rgba(23,162,115,.4)}
+.h-lab{position:absolute; top:10px; font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.12em; padding:5px 10px; border-radius:5px; color:#fff; white-space:nowrap; box-shadow:0 4px 10px -4px rgba(12,31,23,.4)}
+.hl-pre{right:12px; background:var(--red)}
+.hl-post{left:12px; background:var(--grn)}
+.cmp-hint{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--ink3); text-align:center; margin-top:9px}
+.viz-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:22px}
+.vh{font-family:var(--mono); font-size:10.5px; letter-spacing:.24em; color:var(--ink2); margin-bottom:12px; display:flex; justify-content:space-between}
+.ladder{display:flex; flex-direction:column; gap:6px}
+.lrow{display:grid; grid-template-columns:58px 1fr 1fr; gap:10px; align-items:center}
+.lrow .ll{font-family:var(--disp); font-weight:700; font-size:15px; color:var(--ink); letter-spacing:.02em}
+.lcell{display:flex; gap:3px}
+.lcell i{flex:1; height:16px; border-radius:4px; background:#E6EDE5; transition:background .5s ease, transform .5s ease; transform:scaleY(.5); transform-origin:bottom}
+.lcell.pre i.on{background:var(--red)} .lcell.post i.on{background:var(--grn-br)}
+.lcell i.on{transform:scaleY(1)}
+.ladder-legend{display:flex; gap:16px; margin-top:10px; font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--ink2)}
+.ladder-legend s{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;text-decoration:none;vertical-align:-1px}
+.bars{display:flex; flex-direction:column; justify-content:center; gap:22px; height:100%}
+.bar-row{display:grid; grid-template-columns:52px 1fr auto; gap:10px; align-items:center}
+.bar-lab{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--ink2)}
+.bar{height:22px; border-radius:5px; background:#E6EDE5; overflow:hidden; border:1px solid var(--line)}
+.bar i{display:block; height:100%; width:2%; transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar.pre i{background:repeating-linear-gradient(-45deg,var(--red) 0 7px, #E2664F 7px 14px)}
+.bar.post i{background:repeating-linear-gradient(-45deg,var(--grn) 0 7px, var(--grn-br) 7px 14px)}
+.bar-val{font-family:var(--mono); font-size:11.5px; font-weight:600; min-width:96px; text-align:right}
+/* Audit Log */
+.log-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0}
+.log-stats div{border:1.5px solid var(--line); border-radius:8px; padding:10px; text-align:center; transition:border-color .3s}
+.log-stats small{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:var(--ink3); margin-bottom:6px}
+.log-stats b{font-family:var(--disp); font-size:26px; font-weight:800}
+.log-stats em{display:block; font-style:normal; font-family:var(--mono); font-size:10px; color:var(--grn); margin-top:2px; letter-spacing:.08em}
+.log-stats div.s b{color:var(--grn)} .log-stats div.b b{color:#A67715} .log-stats div.p b{color:var(--red)}
+/* Report */
+.report-card{border:2px solid var(--ink)}
+.report{margin-top:14px; border-top:3px double var(--ink); padding-top:16px; font-size:14px; line-height:1.65}
+.rep-head{text-align:center; font-family:var(--mono); letter-spacing:.2em; font-size:11px; color:var(--ink2); margin-bottom:14px}
+.rep-meta{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; font-family:var(--mono); font-size:11.5px}
+.rep-meta div{border:1px solid var(--line); border-radius:6px; padding:8px 10px}
+.rep-meta small{display:block; font-size:9px; letter-spacing:.2em; color:var(--ink3); margin-bottom:3px}
+.rep-body p{margin-bottom:12px}
+.rep-body .verdict{font-family:var(--disp); font-weight:700; font-size:17px}
+.verdict.up{color:var(--grn)} .verdict.flat{color:#A67715} .verdict.down{color:var(--red)}
+.rep-table{width:100%; border-collapse:collapse; margin:14px 0; font-family:var(--mono); font-size:12px}
+.rep-table th,.rep-table td{border:1px solid var(--line); padding:8px 10px; text-align:left}
+.rep-table th{background:#EEF3ED; font-weight:600; letter-spacing:.1em; font-size:10.5px; color:var(--ink2)}
+.rep-sign{display:flex; justify-content:space-between; align-items:flex-end; margin-top:26px; font-family:var(--mono); font-size:11px; color:var(--ink2)}
+.rep-sign .sig{border-top:1.5px solid var(--ink); padding-top:6px; width:220px; letter-spacing:.1em}
+.rep-note{font-size:11px; color:var(--ink3); margin-top:12px; font-family:var(--mono); letter-spacing:.03em}
+.rep-actions{display:flex; gap:10px; margin-top:18px}
+footer{border-top:2px solid var(--ink); padding:18px 0 30px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--ink3); display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap}
+.reveal{opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1; transform:none}
+/* Responsive */
+@media (max-width:1000px){
+  .masthead{grid-template-columns:1fr}
+  .mast-right{grid-template-columns:1fr}
+  .layout{grid-template-columns:1fr}
+  .ref-grid{grid-template-columns:1fr}
+  .viz-grid{grid-template-columns:1fr}
+  .rep-meta{grid-template-columns:1fr 1fr}
+  .disp-main{grid-template-columns:1fr}
+  .gauge{margin:0 auto}
+  .disp-tags{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .log-stats{grid-template-columns:1fr 1fr}
+  .who-stats{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important; transition:none!important}}
+@media print{
+  body{background:#fff}
+  .topbar,.masthead,.col.inputs,.display,.viz,.log-card,.rep-actions,footer,.col-title,.tip,.ref-panel{display:none!important}
+  .layout{display:block}
+  .report-card{border:none; box-shadow:none}
+  body::before{display:none}
+}
+</style>
+</head>
+<body>
+<div class="frame">
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>DR. SHROFF'S CHARITY EYE HOSPITAL <em>// OPTOTYPE VA Comparator</em></div>
+    <div class="tb-right"><span>SESSION <b id="sessNo">—</b></span><span id="todayLbl">—</span></div>
+  </header>
+  <section class="masthead">
+    <div>
+      <div class="kicker">SNELLEN · DECIMAL · LOGMAR · <span>BENCHMARK + WHO/NPCB</span></div>
+      <h1>Before <span class="amp">&amp;</span> After<br><span class="outline">Vision Comparison</span></h1>
+      <p class="lede"><b>Pre-op aur post-op visual acuity enter karo</b> (Enter pre-op and post-op visual acuity) — system lines gained, blur simulation, procedure-wise expected benchmark, WHO/NPCB success grading, audit log with CSV export aur full outcome report generate karega. Poora tool aapke standard Snellen chart (6/60 → 6/6) par based hai.</p>
+      <div class="facts">
+        <span>1 LINE = <b>1</b> CHART ROW</span>
+        <span>WHO SUCCESS = POST-OP <b>≥ 6/18</b></span>
+        <span>6/6 = 20/20 = 1.0 = <b>0.00</b></span>
+      </div>
+    </div>
+    <div class="mast-right">
+      <figure class="mast-chart" aria-hidden="true">
+        <div class="mrow" style="font-size:58px;animation-delay:.05s">E<small>6/60</small></div>
+        <div class="mrow" style="font-size:42px;animation-delay:.2s">F P<small>6/36</small></div>
+        <div class="mrow" style="font-size:31px;animation-delay:.35s">T O Z<small>6/24</small></div>
+        <div class="mrow" style="font-size:23px;animation-delay:.5s">L P E D<small>6/18</small></div>
+        <div class="mrow" style="font-size:17px;animation-delay:.65s">P E C F D<small>6/12</small></div>
+        <div class="mrow" style="font-size:13px;animation-delay:.8s">E D F C Z P<small>6/9</small></div>
+        <div class="mrow" style="font-size:10px;animation-delay:.95s;position:relative;z-index:1">F E L O P Z D<small>6/6</small></div>
+        <figcaption>DISTANCE CHART · 6 M</figcaption>
+      </figure>
+      <div class="mast-info">
+        <h3>Understanding Snellen Notation <span>(स्नेलेन संकेत समझें)</span></h3>
+        <div class="snellen-explain">
+          <div class="snellen-row">
+            <div class="snellen-val">6/6</div>
+            <div class="snellen-desc"><b>Normal Vision</b> — 6m par jo dikhta hai, normal aankh 6m par dekhti hai<small>NORMAL · LogMAR 0.00 · Decimal 1.00</small></div>
+          </div>
+          <div class="snellen-row warn">
+            <div class="snellen-val">6/18</div>
+            <div class="snellen-desc"><b>WHO Success Threshold</b> — Surgery ke baad minimum acceptable vision<small>BORDERLINE · LogMAR 0.48 · Decimal 0.33</small></div>
+          </div>
+          <div class="snellen-row bad">
+            <div class="snellen-val">6/60</div>
+            <div class="snellen-desc"><b>Severe Impairment</b> — 6m par jo dikhta hai, normal aankh 60m par dekhti hai<small>SEVERE · LogMAR 1.00 · Decimal 0.10</small></div>
+          </div>
+        </div>
+        <div class="mast-info-footer">
+          💡 <b>Formula:</b> Snellen = Test Distance / Reference Distance<br>
+          📏 <b>6/60 matlab:</b> Patient 6m se jo padhta hai, normal eye 60m se padhti hai<br>
+          🎯 <b>Goal:</b> Surgery ke baad ≥ 6/18 (WHO/NPCB success)
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Quick Reference Panel -->
+  <section class="ref-panel reveal">
+    <div class="ref-head">Vision Health Statistics (WHO) · Quick Reference (दृश्य स्वास्थ्य आँकड़े)</div>
+    <div class="ref-grid">
+      <div>
+        <div class="who-stats">
+          <div class="who-card"><div class="num">2.2B+</div><div class="desc">People have vision impairment or blindness<br>(दृष्टि दोष या अंधापन)</div></div>
+          <div class="who-card"><div class="icon">👓</div><div class="num">800M+</div><div class="desc">People have distance vision impairment due to uncorrected refractive errors<br>(असुधारा हुआ रिफ्रैक्टिव त्रुटि)</div></div>
+          <div class="who-card"><div class="icon"></div><div class="num">1B+</div><div class="desc">Cases could have been prevented or are yet to be addressed<br>(रोका जा सकता था)</div></div>
+          <div class="who-card"><div class="icon">⚫</div><div class="num">43M+</div><div class="desc">People are blind globally<br>(वैश्विक अंधापन)</div></div>
+        </div>
+        <div class="quick-facts">
+          <h4>Quick Eye Facts (त्वरित तथ्य)</h4>
+          <ul>
+            <li>80% of vision impairment is preventable or treatable (80% दृष्टि दोष रोका या उपचारित किया जा सकता है)</li>
+            <li>Cataract is the leading cause of blindness globally (मोतियाबिंद वैश्विक अंधापन का प्रमुख कारण)</li>
+            <li>Regular eye exams can detect problems early (नियमित जाँच से समस्याएँ जल्दी पकड़ी जा सकती हैं)</li>
+            <li>WHO recommends post-op VA ≥ 6/18 as success criterion (WHO सर्जरी सफलता के लिए ≥ 6/18 सिफारिश करता है)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="va-ref">
+          <h3>Visual Acuity Reference (दृश्य तीक्ष्णता संदर्भ)</h3>
+          <table>
+            <tr><th>SNELLEN</th><th>DECIMAL</th><th>LOGMAR</th><th>STATUS</th></tr>
+            <tr><td>6/6</td><td>1.00</td><td>0.00</td><td>Normal</td></tr>
+            <tr><td>6/9</td><td>0.67</td><td>0.18</td><td>Mild</td></tr>
+            <tr><td>6/12</td><td>0.50</td><td>0.30</td><td>Mild</td></tr>
+            <tr class="highlight"><td>6/18</td><td>0.33</td><td>0.48</td><td>WHO Success ✓</td></tr>
+            <tr><td>6/24</td><td>0.25</td><td>0.60</td><td>Moderate</td></tr>
+            <tr><td>6/36</td><td>0.17</td><td>0.78</td><td>Severe</td></tr>
+            <tr><td>6/60</td><td>0.10</td><td>1.00</td><td>Severe</td></tr>
+            <tr><td>CF</td><td>—</td><td>1.85</td><td>Counting Fingers</td></tr>
+            <tr><td>HM</td><td>—</td><td>2.30</td><td>Hand Motion</td></tr>
+            <tr><td>PL</td><td>—</td><td>2.90</td><td>Perception of Light</td></tr>
+          </table>
+        </div>
+        <div class="who-cats">
+          <h3>WHO Vision Impairment Categories (श्रेणियाँ)</h3>
+          <div class="cat-row cat-normal"><span class="cat-label">NORMAL</span><span class="cat-range">6/6 to 6/12 (LogMAR 0.00–0.30)</span></div>
+          <div class="cat-row cat-mild"><span class="cat-label">MILD IMPAIRMENT</span><span class="cat-range">6/18 to 6/24 (LogMAR 0.48–0.60)</span></div>
+          <div class="cat-row cat-moderate"><span class="cat-label">MODERATE</span><span class="cat-range">6/36 to 6/60 (LogMAR 0.78–1.00)</span></div>
+          <div class="cat-row cat-severe"><span class="cat-label">SEVERE</span><span class="cat-range">&lt;6/60 to 3/60 (LogMAR &gt;1.00)</span></div>
+          <div class="cat-row cat-blind"><span class="cat-label">BLINDNESS</span><span class="cat-range">&lt;3/60 (LogMAR &gt;1.30)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <main class="layout">
+    <section class="col inputs">
+      <div class="col-title">01 · INPUT CONSOLE (इनपुट कंसोल)</div>
+      <div class="card reveal">
+        <h2>Case Details <span>(मरीज की जानकारी)</span></h2>
+        <p class="sub">Procedure chunna zaroori hai — benchmark usi se chalta hai. (Selecting procedure is required — benchmark works accordingly.)</p>
+        <div class="patient-grid">
+          <div class="field"><label>Patient / Case ID (मरीज आईडी)</label><input id="ptId" type="text" value="PT-1042"></div>
+          <div class="field"><label>Eye (आंख)</label>
+            <div class="seg" id="eyeSeg">
+              <button data-eye="OD" class="on" title="Right eye">OD</button>
+              <button data-eye="OS" title="Left eye">OS</button>
+              <button data-eye="OU" title="Both eyes">OU</button>
+            </div>
+          </div>
+          <div class="field"><label>Procedure (प्रक्रिया)</label>
+            <select id="proc">
+              <option>Phacoemulsification + IOL</option><option>LASIK</option><option>SMILE</option>
+              <option>PRK / LASEK</option><option>Corneal Graft (PK / DALK)</option><option>DMEK / DSAEK</option>
+              <option>Pars Plana Vitrectomy</option><option>Pterygium Excision</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Review Date (समीक्षा तिथि)</label><input id="opDate" type="date"></div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="format-row">
+          <div class="field"><label>Acuity Format (देखने की क्षमता प्रारूप)</label>
+            <div class="seg fmt" id="fmtSeg">
+              <button data-fmt="snellen" class="on">SNELLEN</button>
+              <button data-fmt="decimal">DECIMAL</button>
+              <button data-fmt="logmar">LOGMAR</button>
+            </div>
+          </div>
+          <div class="unit">UNIT (इकाई)
+            <div class="seg" id="unitSeg">
+              <button data-u="6" class="on">6 m</button>
+              <button data-u="20">20 ft</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="duo">
+        <div class="card va-card pre reveal">
+          <div class="va-head"><h3>PRE-OP (सर्जरी से पहले)</h3><small>BEFORE</small></div>
+          <input class="va-input" id="inPre" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-label="Pre-operative visual acuity">
+          <div class="chips" id="chipsPre"></div>
+          <div class="va-foot">= LogMAR <b id="lmPre">—</b> · Decimal <b id="decPre">—</b></div>
+        </div>
+        <div class="card va-card post reveal">
+          <div class="va-head"><h3>POST-OP (सर्जरी के बाद)</h3><small>AFTER</small></div>
+          <input class="va-input" id="inPost" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-label="Post-operative visual acuity">
+          <div class="chips" id="chipsPost"></div>
+          <div class="va-foot">= LogMAR <b id="lmPost">—</b> · Decimal <b id="decPost">—</b></div>
+        </div>
+      </div>
+      <div class="actions reveal">
+        <button class="btn" id="swapBtn">⇄ SWAP PRE/POST (अदला-बदली)</button>
+        <button class="btn" id="resetBtn">↺ RESET (रीसेट)</button>
+      </div>
+      <p class="tip reveal">Tip: chips se quick-select karo, ya manually type karo — <code>6/24</code> <code>20/80</code> <code>0.5</code> <code>0.30</code> <code>CF</code> <code>HM</code> <code>PL</code>. Enter dabate hi result update. (Tip: use chips for quick-select, or type manually. Press Enter to update.)</p>
+    </section>
+    <section class="col outputs">
+      <div class="col-title">02 · SYSTEM OUTPUT (सिस्टम आउटपुट)</div>
+      <div class="display reveal" role="status" aria-live="polite">
+        <div class="disp-top">
+          <span class="disp-lab">IMPROVEMENT METER (सुधार मीटर)</span>
+          <span class="pill up" id="statusPill">ANALYSING…</span>
+        </div>
+        <div class="disp-main">
+          <div>
+            <div class="bignum" id="bigLines">+0.0</div>
+            <div class="bignum-lab">CHART LINES GAINED (SNELLEN) (प्राप्त चार्ट पंक्तियाँ)</div>
+            <div class="bignum-sub" id="lettersLbl">≈ 0 ETDRS letters</div>
+          </div>
+          <svg class="gauge" viewBox="0 0 200 112" aria-hidden="true">
+            <path d="M30 90 A70 70 0 0 1 58.8 33.4" fill="none" stroke="#C8402C" stroke-width="9" stroke-linecap="round" opacity=".85"/>
+            <path d="M58.8 33.4 A70 70 0 0 1 141.2 33.4" fill="none" stroke="#DE9E2E" stroke-width="9" opacity=".85"/>
+            <path d="M141.2 33.4 A70 70 0 0 1 170 90" fill="none" stroke="#17A273" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+            <g id="needleG" style="transform-origin:100px 90px; transition:transform .9s cubic-bezier(.2,.8,.2,1)">
+              <line x1="100" y1="90" x2="100" y2="34" stroke="#EAFBF1" stroke-width="4" stroke-linecap="round"/>
+              <line x1="100" y1="90" x2="100" y2="34" stroke="#6FF0AE" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+            <circle cx="100" cy="90" r="7" fill="#EAFBF1"/>
+            <text x="22" y="108" font-size="9" fill="#5F8A73" font-family="IBM Plex Mono">-6 LINES</text>
+            <text x="140" y="108" font-size="9" fill="#5F8A73" font-family="IBM Plex Mono">+6 LINES</text>
+          </svg>
+        </div>
+        <div class="disp-grid">
+          <div class="dg"><small>Δ LOGMAR</small><span id="dLog">—</span></div>
+          <div class="dg"><small>Δ DECIMAL</small><span id="dDec">—</span></div>
+          <div class="dg"><small>SNELLEN SHIFT</small><span id="dSnel">—</span></div>
+        </div>
+        <div class="disp-tags">
+          <div class="dtag" id="benchTag">—</div>
+          <div class="dtag" id="whoTagEl">—</div>
+        </div>
+      </div>
+      <div class="card viz reveal">
+        <h2>Visual Summary <span>BLUR SIMULATION + CHART LADDER (TEACHING VIEW)</span><br><small>(दृश्य सारांश - धुंधलापन सिमुलेशन + चार्ट सीढ़ी)</small></h2>
+        <div class="cmp" id="cmp" style="--x:50">
+          <div class="cmp-layer cmp-a" id="layerA"></div>
+          <div class="cmp-layer cmp-b" id="layerB"></div>
+          <div class="cmp-handle" aria-hidden="true">
+            <span class="h-lab hl-pre">PRE-OP · <b id="cmpPreLbl">—</b></span>
+            <span class="h-lab hl-post">POST-OP · <b id="cmpPostLbl">—</b></span>
+          </div>
+          <input type="range" id="cmpRange" min="20" max="80" value="50" aria-label="Before / after comparison handle">
+        </div>
+        <div class="cmp-hint">◂ HANDLE KE LEFT = PRE-OP (BLUR) · HANDLE KE RIGHT = POST-OP (SHARP) ▸<br>(हैंडल बाएं = सर्जरी से पहले (धुंधला) · हैंडल दाएं = सर्जरी के बाद (स्पष्ट))</div>
+        <div class="viz-grid">
+          <div>
+            <div class="vh"><span>READABLE CHART LINES (पढ़ने योग्य चार्ट पंक्तियाँ)</span><span>1 BLOCK = 1 LINE</span></div>
+            <div class="ladder" id="ladder"></div>
+            <div class="ladder-legend">
+              <span><s style="background:var(--red)"></s>PRE-OP</span>
+              <span><s style="background:var(--grn-br)"></s>POST-OP</span>
+            </div>
+          </div>
+          <div class="bars">
+            <div class="vh"><span>DECIMAL ACUITY (दशमलव तीक्ष्णता)</span><span>SCALE 0–1.5</span></div>
+            <div class="bar-row"><span class="bar-lab">PRE</span><div class="bar pre"><i id="barPre"></i></div><span class="bar-val" id="barPreVal">—</span></div>
+            <div class="bar-row"><span class="bar-lab">POST</span><div class="bar post"><i id="barPost"></i></div><span class="bar-val" id="barPostVal">—</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card log-card reveal">
+        <h2>Audit Log <span>WHO/NPCB SUCCESS RATE · CSV EXPORT · LOCAL DEVICE</span><br><small>(ऑडिट लॉग - सफलता दर · CSV निर्यात · स्थानीय डिवाइस)</small></h2>
+        <p class="sub">Har case log karo — success rate live banega. CSV button se poora log Excel/Sheets mein khulne wali file ban jata hai. Data sirf isi device par rahta hai. (Log each case — success rate will be live. CSV button creates a file that opens in Excel/Sheets. Data stays only on this device.)</p>
+        <div class="log-stats">
+          <div><small>TOTAL CASES (कुल मामले)</small><b id="lgTotal">0</b></div>
+          <div class="s"><small>SUCCESS ≥6/18 (सफल)</small><b id="lgSuccess">0</b><em id="lgRate">—</em></div>
+          <div class="b"><small>BORDERLINE (सीमांत)</small><b id="lgBorder">0</b></div>
+          <div class="p"><small>POOR &lt;6/60 (खराब)</small><b id="lgPoor">0</b></div>
+        </div>
+        <div class="rep-actions" style="margin-top:0">
+          <button class="btn primary" id="addLogBtn">＋ ADD CASE TO LOG (लॉग में जोड़ें)</button>
+          <button class="btn" id="csvBtn">⬇ EXPORT CSV (CSV निर्यात)</button>
+          <button class="btn" id="clearLogBtn">🗑 CLEAR LOG (लॉग साफ करें)</button>
+        </div>
+        <p class="tip" id="logLast" style="margin-top:12px">Abhi koi case logged nahi. (No case logged yet.)</p>
+      </div>
+      <div class="card report-card reveal">
+        <h2>Outcome Report <span>AUTO-GENERATED · PRINTABLE</span><br><small>(परिणाम रिपोर्ट - स्वतः जनित · प्रिंट योग्य)</small></h2>
+        <div class="report" id="report"></div>
+        <div class="rep-actions no-print">
+          <button class="btn primary" onclick="window.print()">⎙ PRINT / SAVE PDF (प्रिंट / PDF सहेजें)</button>
+          <button class="btn" id="copyBtn">⧉ COPY TEXT (पाठ कॉपी करें)</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span>OPTOTYPE VA-B13 · DECISION-SUPPORT TOOL — CLINICAL JUDGEMENT KA REPLACEMENT NAHI<br>(निर्णय-समर्थन उपकरण — नैदानिक निर्णय का विकल्प नहीं)</span>
+    <span>DEVELOPED BY MR. PAWAN KUMAR — PUBLIC HEALTH DEPARTMENT<br>(विकास: श्री पवन कुमार — सार्वजनिक स्वास्थ्य विभाग)</span>
+  </footer>
+</div>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const ROWS=[
+  {s:"E",lm:1.00,lbl:"6/60"},{s:"F P",lm:.78,lbl:"6/36"},{s:"T O Z",lm:.60,lbl:"6/24"},
+  {s:"L P E D",lm:.48,lbl:"6/18"},{s:"P E C F D",lm:.30,lbl:"6/12"},
+  {s:"E D F C Z P",lm:.18,lbl:"6/9"},{s:"F E L O P Z D",lm:0,lbl:"6/6"}
+];
+const MINI_SIZES=[54,40,30,23,18,14,11];
+const SPECIAL={CF:1.85,HM:2.30,PL:2.90};
+const SP_FULL={CF:"Counting Fingers",HM:"Hand Motion",PL:"Perception of Light"};
+const CHIP_LMS=[1.0,.78,.6,.48,.3,.18,0,-.08];
+const STD6=[60,48,36,24,18,12,9,6,5];
+const BENCH={
+  "Phacoemulsification + IOL":{min:2,max:5},
+  "LASIK":{min:-1,max:2},"SMILE":{min:-1,max:2},"PRK / LASEK":{min:-1,max:2},
+  "Corneal Graft (PK / DALK)":{min:1,max:4},
+  "DMEK / DSAEK":{min:1,max:4},
+  "Pars Plana Vitrectomy":{min:0,max:3},
+  "Pterygium Excision":{min:-1,max:1},
+  "Other":{min:0,max:3}
+};
+const fN=v=>(v>0?"+":"")+v;
+let fmt="snellen", unitBase=6;
+let pre={lm:.60}, post={lm:0};
+let cur={lines:0,bench:null,who:null};
+const num=v=>({lm:+v});
+function snellenLabel(lm,base){
+  base=base||unitBase;
+  const den6=6*Math.pow(10,lm);
+  for(const s of STD6){if(Math.abs(den6-s)/s<.08)return base+"/"+Math.round(s*base/6);}
+  return base+"/"+Math.max(3,Math.round(base*Math.pow(10,lm)));
+}
+function fmtValue(c){
+  if(c.sp)return c.sp;
+  if(fmt==="snellen")return snellenLabel(c.lm);
+  if(fmt==="decimal")return String(+(Math.pow(10,-c.lm)).toFixed(2));
+  return c.lm.toFixed(2);
+}
+function fullLabel(c){
+  if(c.sp)return SP_FULL[c.sp]+" (≈LogMAR "+c.lm.toFixed(2)+")";
+  return snellenLabel(c.lm)+" · "+Math.pow(10,-c.lm).toFixed(2)+" · LogMAR "+c.lm.toFixed(2);
+}
+function parseVA(raw){
+  const s=(raw||"").trim().toUpperCase();
+  if(!s)return null;
+  if(SPECIAL[s]!==undefined)return{lm:SPECIAL[s],sp:s};
+  if(fmt==="snellen"){
+    let m=s.match(/^(\d+(?:\.\d+)?)\s*[\/:]\s*(\d+(?:\.\d+)?)$/);
+    if(m){const n=+m[1],d=+m[2];if(n>0&&d>0)return num(Math.log10(d/n));}
+    m=s.match(/^(\d+(?:\.\d+)?)$/);
+    if(m){const d=+m[1];if(d>0)return num(Math.log10(d/unitBase));}
+    return null;
+  }
+  const v=parseFloat(s);
+  if(isNaN(v))return null;
+  if(fmt==="decimal"){if(v>0&&v<=3)return num(-Math.log10(v));return null;}
+  if(v>=-0.5&&v<=3.5)return num(v);
+  return null;
+}
+function blurFor(lm){return Math.max(0,Math.min(lm,2.4))*3.4;}
+function readIdx(lm){
+  let ix=-99;
+  ROWS.forEach((r,i)=>{if(lm<=r.lm+.03)ix=i;});
+  if(ix>=0)return ix;
+  if(lm<=2.0)return -1;
+  if(lm<=2.5)return -2;
+  return -3;
+}
+function benchOf(lines,proc){
+  const b=BENCH[proc]||BENCH["Other"];
+  const range="expected "+fN(b.min)+"…"+fN(b.max)+" lines";
+  if(lines<b.min)return{txt:"BELOW EXPECTATION ⚠ · "+range,cls:"down",key:"BELOW",range};
+  if(lines>b.max)return{txt:"ABOVE EXPECTATION ✅ · "+range,cls:"up",key:"ABOVE",range};
+  return{txt:"AS EXPECTED ✔ · "+range,cls:"",key:"AS",range};
+}
+function whoOf(c){
+  if(!c.sp&&c.lm<=0.481)return{key:"S",t:"SUCCESS ✅",cls:"up",note:"post-op ≥ 6/18 (WHO/NPCB good)"};
+  if(!c.sp&&c.lm<=1.001)return{key:"B",t:"BORDERLINE ",cls:"flat",note:"6/24–6/60 (WHO/NPCB borderline)"};
+  return{key:"P",t:"POOR OUTCOME ",cls:"down",note:"worse than 6/60 (WHO/NPCB poor)"};
+}
+function tween(el,to,dec,sign){
+  const from=el._v===undefined?0:el._v;el._v=to;
+  const t0=performance.now(),D=650;
+  (function step(t){
+    const p=Math.min(1,(t-t0)/D),e=1-Math.pow(1-p,3),v=from+(to-from)*e;
+    el.textContent=(sign&&v>0?"+":"")+v.toFixed(dec);
+    if(p<1)requestAnimationFrame(step);
+  })(t0);
+}
+const ladder=$("#ladder");
+ROWS.forEach(r=>{
+  const row=document.createElement("div");row.className="lrow";
+  row.innerHTML=`<span class="ll">${r.lbl}</span><div class="lcell pre"><i></i></div><div class="lcell post"><i></i></div>`;
+  ladder.appendChild(row);
+});
+function miniChart(){
+  let h='<div class="mini-chart">';
+  ROWS.forEach((r,i)=>{
+    h+=`<div class="mcr" style="font-size:${MINI_SIZES[i]}px">${r.s}</div>`;
+    h+=`<div class="mcl">${r.lbl}</div>`;
+    if(r.lbl==="6/12")h+='<div class="mred"></div>';
+  });
+  h+='<div class="mcap">DISTANCE CHART · 6 M</div></div>';
+  return h;
+}
+$("#layerA").innerHTML=miniChart();$("#layerB").innerHTML=miniChart();
+function chipLabel(lm){return fmt==="snellen"?snellenLabel(lm):(fmt==="decimal"?String(+(Math.pow(10,-lm)).toFixed(2)):lm.toFixed(2));}
+function renderChips(){
+  [["#chipsPre","pre"],["#chipsPost","post"]].forEach(([sel,side])=>{
+    const box=$(sel);box.innerHTML="";
+    CHIP_LMS.forEach(lm=>{
+      const b=document.createElement("button");b.className="chip";b.textContent=chipLabel(lm);
+      b.onclick=()=>setVA(side,num(lm));box.appendChild(b);
+    });
+    Object.keys(SPECIAL).forEach(sp=>{
+      const b=document.createElement("button");b.className="chip sp";b.textContent=sp;
+      b.onclick=()=>setVA(side,{lm:SPECIAL[sp],sp});box.appendChild(b);
+    });
+  });
+}
+function setVA(side,c){
+  if(side==="pre"){pre=c;$("#inPre").value=fmtValue(c);}
+  else{post=c;$("#inPost").value=fmtValue(c);}
+  recalc();
+}
+function wireInput(sel,side){
+  const el=$(sel);
+  el.addEventListener("change",()=>{
+    const c=parseVA(el.value);
+    if(c){el.classList.remove("err");setVA(side,c);}
+    else{el.classList.add("err");setTimeout(()=>el.classList.remove("err"),450);el.value=fmtValue(side==="pre"?pre:post);}
+  });
+  el.addEventListener("keydown",e=>{if(e.key==="Enter")el.blur();});
+}
+wireInput("#inPre","pre");wireInput("#inPost","post");
+$$("#fmtSeg button").forEach(b=>b.onclick=()=>{
+  fmt=b.dataset.fmt;$$("#fmtSeg button").forEach(x=>x.classList.toggle("on",x===b));
+  $("#inPre").value=fmtValue(pre);$("#inPost").value=fmtValue(post);renderChips();recalc();
+});
+$$("#unitSeg button").forEach(b=>b.onclick=()=>{
+  unitBase=+b.dataset.u;$$("#unitSeg button").forEach(x=>x.classList.toggle("on",x===b));
+  if(fmt==="snellen"){$("#inPre").value=fmtValue(pre);$("#inPost").value=fmtValue(post);renderChips();recalc();}
+});
+let eye="OD";
+$$("#eyeSeg button").forEach(b=>b.onclick=()=>{
+  eye=b.dataset.eye;$$("#eyeSeg button").forEach(x=>x.classList.toggle("on",x===b));recalc();
+});
+$("#swapBtn").onclick=()=>{[pre,post]=[post,pre];$("#inPre").value=fmtValue(pre);$("#inPost").value=fmtValue(post);recalc();};
+$("#resetBtn").onclick=()=>{pre=num(.60);post=num(0);$("#inPre").value=fmtValue(pre);$("#inPost").value=fmtValue(post);recalc();};
+$("#cmpRange").addEventListener("input",e=>{$("#cmp").style.setProperty("--x",e.target.value);});
+let LOG=[];
+try{LOG=JSON.parse(localStorage.getItem("optotype_log")||"[]")||[];}catch(e){LOG=[];}
+function saveLog(){try{localStorage.setItem("optotype_log",JSON.stringify(LOG));}catch(e){}}
+const whoName=k=>k==="S"?"SUCCESS":k==="B"?"BORDERLINE":"POOR";
+function renderLog(){
+  const t=LOG.length,s=LOG.filter(c=>c.who==="S").length,bo=LOG.filter(c=>c.who==="B").length,p=LOG.filter(c=>c.who==="P").length;
+  $("#lgTotal").textContent=t;$("#lgSuccess").textContent=s;$("#lgBorder").textContent=bo;$("#lgPoor").textContent=p;
+  $("#lgRate").textContent=t?"RATE "+Math.round(s/t*100)+"%":"—";
+  const L=LOG[LOG.length-1];
+  $("#logLast").textContent=L?`Last: ${L.pid} · ${L.eye} · ${L.proc} · ${L.pre}→${L.post} · ${L.lines>=0?"+":""}${L.lines} lines · ${whoName(L.who)}`:"Abhi koi case logged nahi — result dekhne ke baad ADD dabao.";
+}
+$("#addLogBtn").onclick=()=>{
+  LOG.push({
+    dt:$("#opDate").value||"",pid:$("#ptId").value||"—",eye:eye,proc:$("#proc").value,
+    pre:fmtValue(pre),post:fmtValue(post),
+    preSnellen:pre.sp?pre.sp:snellenLabel(pre.lm),
+    postSnellen:post.sp?post.sp:snellenLabel(post.lm),
+    lines:cur.lines,who:cur.who.key
+  });
+  saveLog();renderLog();
+  const b=$("#addLogBtn");b.textContent="✓ CASE ADDED";setTimeout(()=>b.textContent="＋ ADD CASE TO LOG",1200);
+};
+$("#csvBtn").onclick=()=>{
+  if(!LOG.length){alert("Log khaali hai — pehle cases ADD karo. (Log is empty — add cases first.)");return;}
+  const head=["Date","CaseID","Eye","Procedure","PreOp_Snellen","PostOp_Snellen","LinesGained","WHO_NPCB"];
+  const rows=LOG.map(c=>[c.dt||"",c.pid,c.eye,c.proc,c.preSnellen,c.postSnellen,c.lines,whoName(c.who)].join("\t"));
+  const tsv=head.join("\t")+"\n"+rows.join("\n");
+  const blob=new Blob(["\uFEFF"+tsv],{type:"text/tab-separated-values;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="Dr_Shroffs_Charity_Eye_Hospital_Audit_"+new Date().toISOString().slice(0,10)+".csv";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),500);
+  const b=$("#csvBtn");b.textContent="✓ CSV DOWNLOADED";setTimeout(()=>b.textContent=" EXPORT CSV",1400);
+};
+$("#clearLogBtn").onclick=()=>{if(confirm("Poora audit log clear karein? (Clear entire audit log?)")){LOG=[];saveLog();renderLog();}};
+function buildReport(lines,dLM,letters,st){
+  const eyeTxt={OD:"Right eye (OD)",OS:"Left eye (OS)",OU:"Both eyes (OU)"}[eye];
+  const proc=$("#proc").value,pid=$("#ptId").value||"—",dt=$("#opDate").value||"—";
+  const etdrs=(dLM*10).toFixed(1);
+  let verdict,body;
+  if(st==="up"){
+    const mag=lines>=4?"MARKED":lines>=2?"SUBSTANTIAL":"MODEST";
+    verdict=`<span class="verdict up">▲ IMPROVED — ${mag} VISUAL GAIN</span>`;
+    body=`Visual acuity improved from <b>${fullLabel(pre)}</b> to <b>${fullLabel(post)}</b> — a gain of <b>${lines} chart lines</b> on the standard Snellen ladder (ΔLogMAR ${dLM.toFixed(2)} ≈ ${etdrs} ETDRS lines; ≈${letters} letters). The trajectory is consistent with a successful ${proc} recovery.`;
+  }else if(st==="down"){
+    verdict=`<span class="verdict down">▼ DECLINED — REVIEW ADVISED</span>`;
+    body=`Visual acuity decreased from <b>${fullLabel(pre)}</b> to <b>${fullLabel(post)}</b> — a loss of <b>${Math.abs(lines)} chart lines</b> (ΔLogMAR ${dLM.toFixed(2)}). Recommend clinical review: refraction, media clarity and macular assessment.`;
+  }else{
+    verdict=`<span class="verdict flat">● STABLE — NO SIGNIFICANT CHANGE</span>`;
+    body=`Visual acuity remained essentially stable (within ±1 chart line): <b>${fullLabel(pre)}</b> → <b>${fullLabel(post)}</b>. Continue routine post-operative follow-up.`;
+  }
+  if(cur.bench.key==="BELOW")body+=` <b>Outcome below departmental benchmark (${cur.bench.range}) — audit flag.</b>`;
+  return `<div class="rep-head">DR. SHROFF'S CHARITY EYE HOSPITAL<br>VISUAL ACUITY OUTCOME REPORT</div>
+  <div class="rep-meta">
+    <div><small>CASE ID</small>${pid}</div>
+    <div><small>EYE</small>${eyeTxt}</div>
+    <div><small>PROCEDURE</small>${proc}</div>
+    <div><small>DATE</small>${dt}</div>
+  </div>
+  <div class="rep-body">
+    ${verdict}
+    <p>${body}</p>
+    <table class="rep-table">
+      <tr><th></th><th>SNELLEN (6m)</th><th>DECIMAL</th><th>LOGMAR</th></tr>
+      <tr><th>PRE-OP</th><td>${pre.sp?"—":snellenLabel(pre.lm,6)}</td><td>${pre.sp?"—":Math.pow(10,-pre.lm).toFixed(2)}</td><td>${pre.lm.toFixed(2)}${pre.sp?" ("+pre.sp+")":""}</td></tr>
+      <tr><th>POST-OP</th><td>${post.sp?"—":snellenLabel(post.lm,6)}</td><td>${post.sp?"—":Math.pow(10,-post.lm).toFixed(2)}</td><td>${post.lm.toFixed(2)}${post.sp?" ("+post.sp+")":""}</td></tr>
+      <tr><th>Δ</th><td colspan="3">${lines>=0?"+":""}${lines} chart lines · ΔLogMAR ${(-dLM).toFixed(2)} (≈${etdrs} ETDRS lines)</td></tr>
+      <tr><th>BENCHMARK</th><td colspan="3">${proc}: ${cur.bench.txt}</td></tr>
+      <tr><th>WHO / NPCB</th><td colspan="3">${cur.who.t} — ${cur.who.note}</td></tr>
+    </table>
+    <div class="rep-sign">
+      <span>GENERATED ${new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase()}</span>
+      <span class="sig">EXAMINER SIGNATURE</span>
+    </div>
+    <p class="rep-note">* Decision-support only; final interpretation examiner ki hai. WHO/NPCB: good ≥6/18, borderline 6/24–6/60, poor &lt;6/60. Lines = standard Snellen chart rows.</p>
+  </div>`;
+}
+$("#copyBtn").onclick=()=>{
+  const tmp=$("#report").innerText;
+  navigator.clipboard&&navigator.clipboard.writeText(tmp);
+  const b=$("#copyBtn");b.textContent="✓ COPIED";setTimeout(()=>b.textContent="⧉ COPY TEXT",1400);
+};
+["#ptId","#proc","#opDate"].forEach(sel=>$(sel).addEventListener("input",()=>recalc(true)));
+function recalc(skipAnim){
+  const dLM=pre.lm-post.lm;
+  const rp=readIdx(pre.lm),rq=readIdx(post.lm);
+  const lines=rq-rp;
+  const letters=lines*5;
+  const st=lines>=1?"up":lines<=-1?"down":"flat";
+  cur.lines=lines;
+  cur.bench=benchOf(lines,$("#proc").value);
+  cur.who=whoOf(post);
+  const pill=$("#statusPill");
+  pill.className="pill "+(st==="up"?"up":st==="down"?"down":"flat");
+  pill.textContent=st==="up"?"▲ IMPROVED":st==="down"?"▼ DECLINED":"● STABLE";
+  const big=$("#bigLines");big.classList.toggle("neg",lines<0);
+  if(skipAnim){big._v=lines;big.textContent=(lines>0?"+":"")+lines.toFixed(1);}
+  else tween(big,lines,1,true);
+  $("#lettersLbl").textContent=(letters>=0?"≈ +":"≈ ")+letters+" ETDRS letters · ΔLogMAR "+(dLM>0?"+":"")+dLM.toFixed(2);
+  const ang=Math.max(-6,Math.min(6,lines))/6*80;
+  $("#needleG").style.transform="rotate("+ang+"deg)";
+  $("#dLog").textContent=(dLM>0?"+":"")+dLM.toFixed(2);
+  if(!pre.sp&&!post.sp){const dd=Math.pow(10,-post.lm)-Math.pow(10,-pre.lm);$("#dDec").textContent=(dd>0?"+":"")+dd.toFixed(2);}
+  else $("#dDec").textContent="—";
+  $("#dSnel").textContent=(pre.sp?pre.sp:snellenLabel(pre.lm))+" → "+(post.sp?post.sp:snellenLabel(post.lm));
+  const bt=$("#benchTag");bt.className="dtag "+cur.bench.cls;
+  bt.innerHTML=`<small>BENCHMARK · ${$("#proc").value.toUpperCase()}</small>${cur.bench.txt}`;
+  const wt=$("#whoTagEl");wt.className="dtag "+cur.who.cls;
+  wt.innerHTML=`<small>WHO / NPCB · POST-OP</small>${cur.who.t} · ${cur.who.note}`;
+  $("#lmPre").textContent=pre.lm.toFixed(2);$("#lmPost").textContent=post.lm.toFixed(2);
+  $("#decPre").textContent=pre.sp?"—":Math.pow(10,-pre.lm).toFixed(2);
+  $("#decPost").textContent=post.sp?"—":Math.pow(10,-post.lm).toFixed(2);
+  $("#layerA").style.filter=`blur(${blurFor(pre.lm).toFixed(1)}px) contrast(${(1-Math.min(pre.lm,2)*.16).toFixed(2)})`;
+  $("#layerB").style.filter=`blur(${blurFor(post.lm).toFixed(1)}px) contrast(${(1-Math.min(post.lm,2)*.16).toFixed(2)})`;
+  $("#cmpPreLbl").textContent=pre.sp?pre.sp:snellenLabel(pre.lm);
+  $("#cmpPostLbl").textContent=post.sp?post.sp:snellenLabel(post.lm);
+  $$("#ladder .lrow").forEach((row,i)=>{
+    const cells=row.querySelectorAll(".lcell");
+    cells[0].querySelector("i").classList.toggle("on",i<=rp);
+    cells[1].querySelector("i").classList.toggle("on",i<=rq);
+  });
+  const decOf=c=>c.sp?0.02:Math.pow(10,-c.lm);
+  const w=v=>Math.max(2,Math.min(decOf(v),1.5)/1.5*100)+"%";
+  $("#barPre").style.width=w(pre);$("#barPost").style.width=w(post);
+  $("#barPreVal").textContent=(pre.sp?pre.sp:snellenLabel(pre.lm))+" · "+decOf(pre).toFixed(2);
+  $("#barPostVal").textContent=(post.sp?post.sp:snellenLabel(post.lm))+" · "+decOf(post).toFixed(2);
+  $("#report").innerHTML=buildReport(lines,dLM,letters,st);
+}
+const now=new Date();
+$("#opDate").value=now.toISOString().slice(0,10);
+$("#todayLbl").textContent=now.toLocaleDateString("en-GB",{weekday:"short",day:"2-digit",month:"short",year:"numeric"}).toUpperCase();
+$("#sessNo").textContent="VC-"+String(now.getFullYear()).slice(2)+String(now.getMonth()+1).padStart(2,"0")+String(now.getDate()).padStart(2,"0")+"-"+String(Math.floor(Math.random()*90)+10);
+renderChips();
+$("#inPre").value=fmtValue(pre);$("#inPost").value=fmtValue(post);
+renderLog();
+recalc(true);
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.12});
+$$(".reveal").forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
