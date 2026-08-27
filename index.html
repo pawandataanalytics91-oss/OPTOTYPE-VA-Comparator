@@ -711,17 +711,17 @@ $("#addLogBtn").onclick=()=>{
   const b=$("#addLogBtn");b.textContent="✓ CASE ADDED";setTimeout(()=>b.textContent="＋ ADD CASE TO LOG",1200);
 };
 $("#csvBtn").onclick=()=>{
-  if(!LOG.length){alert("Log khaali hai — pehle cases ADD karo. (Log is empty — add cases first.)");return;}
+  if(!LOG.length){alert("Log khaali hai — pehle cases ADD karo.");return;}
   const head=["Date","CaseID","Eye","Procedure","PreOp_Snellen","PostOp_Snellen","LinesGained","WHO_NPCB"];
-  const rows=LOG.map(c=>[c.dt||"",c.pid,c.eye,c.proc,c.preSnellen,c.postSnellen,c.lines,whoName(c.who)].join("\t"));
-  const tsv=head.join("\t")+"\n"+rows.join("\n");
-  const blob=new Blob(["\uFEFF"+tsv],{type:"text/tab-separated-values;charset=utf-8"});
+  const rows=LOG.map(c=>[c.dt||"",c.pid,c.eye,c.proc,c.preSnellen||c.pre,c.postSnellen||c.post,c.lines,whoName(c.who)].join("\t"));
+  const tsv="\uFEFF"+head.join("\t")+"\n"+rows.join("\n");
+  const blob=new Blob([tsv],{type:"text/tab-separated-values;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
-  a.download="Dr_Shroffs_Charity_Eye_Hospital_Audit_"+new Date().toISOString().slice(0,10)+".tsv";
-  document.body.appendChild(a);a.click();a.remove();
+  a.href=url; a.download="Dr_Shroffs_Charity_Eye_Hospital_Audit_"+new Date().toISOString().slice(0,10)+".tsv";
+  document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),500);
-  const b=$("#csvBtn");b.textContent="✓ CSV DOWNLOADED";setTimeout(()=>b.textContent=" EXPORT CSV",1400);
+  const b=$("#csvBtn"); b.textContent="✓ DOWNLOADED"; setTimeout(()=>b.textContent="⬇ EXPORT CSV",1400);
 };
 $("#clearLogBtn").onclick=()=>{if(confirm("Poora audit log clear karein? (Clear entire audit log?)")){LOG=[];saveLog();renderLog();}};
 function buildReport(lines,dLM,letters,st){
