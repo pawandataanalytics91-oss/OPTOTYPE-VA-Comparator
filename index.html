@@ -289,7 +289,7 @@ footer{border-top:2px solid var(--ink); padding:18px 0 30px; font-family:var(--m
     <div>
       <div class="kicker">SNELLEN · DECIMAL · LOGMAR · <span>BENCHMARK + WHO/NPCB</span></div>
       <h1>Before <span class="amp">&amp;</span> After<br><span class="outline">Vision Comparison</span></h1>
-      <p class="lede"><b>Pre-op aur post-op visual acuity enter karo</b> (Enter pre-op and post-op visual acuity) — system lines gained, blur simulation, procedure-wise expected benchmark, WHO/NPCB success grading, audit log with CSV export aur full outcome report generate karega. Poora tool aapke standard Snellen chart (6/60 → 6/6) par based hai.</p>
+      <p class="lede"><b>Pre-op aur post-op visual acuity enter karo</b> (Enter pre-op and post-op visual acuity) — system lines gained, blur simulation, procedure-wise expected benchmark, WHO/NPCB success grading, audit log with Excel export aur full outcome report generate karega. Poora tool aapke standard Snellen chart (6/60 → 6/6) par based hai.</p>
       <div class="facts">
         <span>1 LINE = <b>1</b> CHART ROW</span>
         <span>WHO SUCCESS = POST-OP <b>≥ 6/18</b></span>
@@ -507,8 +507,8 @@ footer{border-top:2px solid var(--ink); padding:18px 0 30px; font-family:var(--m
         </div>
       </div>
       <div class="card log-card reveal">
-        <h2>Audit Log <span>WHO/NPCB SUCCESS RATE · CSV EXPORT · LOCAL DEVICE</span><br><small>(ऑडिट लॉग - सफलता दर · CSV निर्यात · स्थानीय डिवाइस)</small></h2>
-        <p class="sub">Har case log karo — success rate live banega. CSV button se poora log Excel/Sheets mein khulne wali file ban jata hai. Data sirf isi device par rahta hai. (Log each case — success rate will be live. CSV button creates a file that opens in Excel/Sheets. Data stays only on this device.)</p>
+        <h2>Audit Log <span>WHO/NPCB SUCCESS RATE · EXCEL EXPORT · LOCAL DEVICE</span><br><small>(ऑडिट लॉग - सफलता दर · CSV निर्यात · स्थानीय डिवाइस)</small></h2>
+        <p class="sub">Har case log karo — success rate live banega. Excel button se poora log Excel/Sheets mein khulne wali file ban jata hai. Data sirf isi device par rahta hai. (Log each case — success rate will be live. CSV button creates a file that opens in Excel/Sheets. Data stays only on this device.)</p>
         <div class="log-stats">
           <div><small>TOTAL CASES (कुल मामले)</small><b id="lgTotal">0</b></div>
           <div class="s"><small>SUCCESS ≥6/18 (सफल)</small><b id="lgSuccess">0</b><em id="lgRate">—</em></div>
@@ -517,7 +517,7 @@ footer{border-top:2px solid var(--ink); padding:18px 0 30px; font-family:var(--m
         </div>
         <div class="rep-actions" style="margin-top:0">
           <button class="btn primary" id="addLogBtn">＋ ADD CASE TO LOG (लॉग में जोड़ें)</button>
-          <button class="btn" id="csvBtn">⬇ EXPORT CSV (CSV निर्यात)</button>
+          <button class="btn" id="excelBtn">⬇ EXPORT EXCEL</button>
           <button class="btn" id="clearLogBtn">🗑 CLEAR LOG (लॉग साफ करें)</button>
         </div>
         <p class="tip" id="logLast" style="margin-top:12px">Abhi koi case logged nahi. (No case logged yet.)</p>
@@ -711,7 +711,7 @@ $("#addLogBtn").onclick=()=>{
   saveLog();renderLog();
   const b=$("#addLogBtn");b.textContent="✓ CASE ADDED";setTimeout(()=>b.textContent="＋ ADD CASE TO LOG",1200);
 };
-$("#csvBtn").onclick = () => {
+$("#excelBtn").onclick = () => {
   if (!LOG.length) {
     alert("Log khaali hai — pehle cases ADD karo.\n\nSteps:\n1. Pre-op aur Post-op vision enter karo\n2. '＋ ADD CASE TO LOG' button dabao\n3. Phir '⬇ EXPORT EXCEL' dabao");
     return;
@@ -752,13 +752,13 @@ $("#csvBtn").onclick = () => {
     const fileName = "Dr_Shroffs_Charity_Eye_Hospital_Audit_" + new Date().toISOString().slice(0, 10) + ".xlsx";
     XLSX.writeFile(wb, fileName);
     
-    // Button feedback
-    const b = $("#csvBtn");
-    b.textContent = "✓ DOWNLOADED";
+    // Button feedback update
+    const b = $("#excelBtn");
+    b.textContent = "✓ EXCEL DOWNLOADED";
     setTimeout(() => b.textContent = "⬇ EXPORT EXCEL", 2000);
     
   } catch (e) {
-    alert("Error: " + e.message + "\n\nInternet connection check karein (SheetJS library load hone ke liye).");
+    alert("Error: " + e.message + "\n\nInternet connection check karein (Excel library load hone ke liye).");
     console.error("Export error:", e);
   }
 };
