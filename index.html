@@ -716,10 +716,10 @@ $("#csvBtn").onclick = () => {
     return;
   }
   
-  // Headers
+  // Headers - TAB separated
   const headers = ["Date", "CaseID", "Eye", "Procedure", "PreOp_Snellen", "PostOp_Snellen", "LinesGained", "WHO_NPCB"];
   
-  // Data rows - TAB separated (Excel friendly)
+  // Data rows - TAB separated
   const rows = LOG.map(c => {
     return [
       c.dt || "",
@@ -738,7 +738,7 @@ $("#csvBtn").onclick = () => {
   
   // Create file with BOM for Excel compatibility
   const blob = new Blob(["\uFEFF" + tsvContent], { 
-    type: "text/tab-separated-values;charset=utf-8" 
+    type: "application/vnd.ms-excel;charset=utf-8" 
   });
   
   const url = URL.createObjectURL(blob);
