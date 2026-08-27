@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <style>
 :root{
   --paper:#F3F6F1; --grid:#E0E8DF; --ink:#0C1F17; --ink2:#4E6157; --ink3:#8A9A90;
   --grn:#0E7A56; --grn-br:#17A273; --lime:#6FF0AE; --red:#C8402C; --amber:#DE9E2E;
@@ -712,48 +713,54 @@ $("#addLogBtn").onclick=()=>{
 };
 $("#csvBtn").onclick = () => {
   if (!LOG.length) {
-    alert("Log khaali hai — pehle cases ADD karo.\n\nSteps:\n1. Pre-op aur Post-op vision enter karo\n2. '＋ ADD CASE TO LOG' button dabao\n3. Phir '⬇ EXPORT CSV' dabao");
+    alert("Log khaali hai — pehle cases ADD karo.\n\nSteps:\n1. Pre-op aur Post-op vision enter karo\n2. '＋ ADD CASE TO LOG' button dabao\n3. Phir '⬇ EXPORT EXCEL' dabao");
     return;
   }
   
-  // Headers - TAB separated
-  const headers = ["Date", "CaseID", "Eye", "Procedure", "PreOp_Snellen", "PostOp_Snellen", "LinesGained", "WHO_NPCB"];
-  
-  // Data rows - TAB separated
-  const rows = LOG.map(c => {
-    return [
-      c.dt || "",
-      c.pid || "",
-      c.eye || "",
-      c.proc || "",
-      c.preSnellen || c.pre || "",
-      c.postSnellen || c.post || "",
-      c.lines || 0,
-      whoName(c.who) || ""
-    ].join("\t");  // TAB character
-  });
-  
-  // Combine with TAB separator
-  const tsvContent = headers.join("\t") + "\n" + rows.join("\n");
-  
-  // Create file with BOM for Excel compatibility
-  const blob = new Blob(["\uFEFF" + tsvContent], { 
-    type: "text/tab-separated-values;charset=utf-8" 
-  });
-  
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "Dr_Shroffs_Charity_Eye_Hospital_Audit_" + new Date().toISOString().slice(0, 10) + ".tsv";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  
-  // Button feedback
-  const b = $("#csvBtn");
-  b.textContent = "✓ DOWNLOADED";
-  setTimeout(() => b.textContent = "⬇ EXPORT CSV", 2000);
+  try {
+    // Excel ke liye data prepare karein
+    const excelData = LOG.map(c => ({
+      "Date": c.dt || "",
+      "CaseID": c.pid || "",
+      "Eye": c.eye || "",
+      "Procedure": c.proc || "",
+      "PreOp_Snellen": c.preSnellen || c.pre || "",
+      "PostOp_Snellen": c.postSnellen || c.post || "",
+      "LinesGained": c.lines || 0,
+      "WHO_NPCB": whoName(c.who) || ""
+    }));
+    
+    // SheetJS se Excel workbook banayein
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    
+    // Column widths set karein (taaki Excel mein saaf dikhe)
+    ws['!cols'] = [
+      { wch: 12 },  // Date
+      { wch: 12 },  // CaseID
+      { wch: 6 },   // Eye
+      { wch: 30 },  // Procedure
+      { wch: 15 },  // PreOp_Snellen
+      { wch: 15 },  // PostOp_Snellen
+      { wch: 12 },  // LinesGained
+      { wch: 12 }   // WHO_NPCB
+    ];
+    
+    XLSX.utils.book_append_sheet(wb, ws, "Audit Data");
+    
+    // File download karein
+    const fileName = "Dr_Shroffs_Charity_Eye_Hospital_Audit_" + new Date().toISOString().slice(0, 10) + ".xlsx";
+    XLSX.writeFile(wb, fileName);
+    
+    // Button feedback
+    const b = $("#csvBtn");
+    b.textContent = "✓ DOWNLOADED";
+    setTimeout(() => b.textContent = "⬇ EXPORT EXCEL", 2000);
+    
+  } catch (e) {
+    alert("Error: " + e.message + "\n\nInternet connection check karein (SheetJS library load hone ke liye).");
+    console.error("Export error:", e);
+  }
 };
 $("#clearLogBtn").onclick=()=>{if(confirm("Poora audit log clear karein? (Clear entire audit log?)")){LOG=[];saveLog();renderLog();}};
 function buildReport(lines,dLM,letters,st){
