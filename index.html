@@ -52,9 +52,9 @@ h1 .outline{color:transparent; -webkit-text-stroke:2px var(--ink); display:inlin
 .mast-right{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch}
 .mast-chart{text-align:center; padding:22px 10px 16px; background:#fff; border:2px solid var(--ink); border-radius:6px; box-shadow:6px 6px 0 rgba(12,31,23,.14); position:relative; align-self:start}
 .mast-chart::after{content:""; position:absolute; left:14%; right:14%; top:74%; border-bottom:2px solid var(--red)}
-.mrow{font-family:var(--disp); font-weight:800; letter-spacing:.32em; text-indent:.32em; color:var(--ink); opacity:0; filter:blur(9px); animation:focusIn .9s forwards}
+.mrow{font-family:var(--disp); font-weight:800; letter-spacing:.32em; text-indent:.32em; color:var(--ink); opacity:1; filter:blur(0); animation:focusIn .9s forwards}
 .mrow small{display:block; font-family:var(--mono); font-weight:400; font-size:9px; letter-spacing:.14em; color:var(--ink3); margin:3px 0 7px}
-@keyframes focusIn{to{opacity:1; filter:blur(0)}}
+@keyframes focusIn{from{opacity:0; filter:blur(9px)}to{opacity:1; filter:blur(0)}}
 .mast-chart figcaption{font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--ink3); margin-top:12px}
 /* Masthead Info Panel (Snellen Explanation) */
 .mast-info{background:#fff; border:2px solid var(--ink); border-radius:6px; padding:16px; box-shadow:6px 6px 0 rgba(12,31,23,.14); display:flex; flex-direction:column; justify-content:center; align-self:start}
@@ -297,14 +297,14 @@ footer{border-top:2px solid var(--ink); padding:18px 0 30px; font-family:var(--m
     </div>
     <div class="mast-right">
       <figure class="mast-chart" aria-hidden="true">
-        <div class="mrow" style="font-size:58px;animation-delay:.05s">E<small>6/60</small></div>
-        <div class="mrow" style="font-size:42px;animation-delay:.2s">F P<small>6/36</small></div>
-        <div class="mrow" style="font-size:31px;animation-delay:.35s">T O Z<small>6/24</small></div>
-        <div class="mrow" style="font-size:23px;animation-delay:.5s">L P E D<small>6/18</small></div>
-        <div class="mrow" style="font-size:17px;animation-delay:.65s">P E C F D<small>6/12</small></div>
-        <div class="mrow" style="font-size:13px;animation-delay:.8s">E D F C Z P<small>6/9</small></div>
-        <div class="mrow" style="font-size:10px;animation-delay:.95s;position:relative;z-index:1">F E L O P Z D<small>6/6</small></div>
-        <figcaption>DISTANCE CHART · 6 M</figcaption>
+  <div class="mrow" style="font-size:58px">E<small>6/60</small></div>
+  <div class="mrow" style="font-size:42px">F P<small>6/36</small></div>
+  <div class="mrow" style="font-size:31px">T O Z<small>6/24</small></div>
+  <div class="mrow" style="font-size:23px">L P E D<small>6/18</small></div>
+  <div class="mrow" style="font-size:17px">P E C F D<small>6/12</small></div>
+  <div class="mrow" style="font-size:13px">E D F C Z P<small>6/9</small></div>
+  <div class="mrow" style="font-size:10px;position:relative;z-index:1">F E L O P Z D<small>6/6</small></div>
+  <figcaption>DISTANCE CHART · 6 M</figcaption>
       </figure>
       <div class="mast-info">
         <h3>Understanding Snellen Notation <span>(स्नेलेन संकेत समझें)</span></h3>
