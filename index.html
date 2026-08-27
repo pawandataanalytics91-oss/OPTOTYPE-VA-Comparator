@@ -710,18 +710,49 @@ $("#addLogBtn").onclick=()=>{
   saveLog();renderLog();
   const b=$("#addLogBtn");b.textContent="✓ CASE ADDED";setTimeout(()=>b.textContent="＋ ADD CASE TO LOG",1200);
 };
-$("#csvBtn").onclick=()=>{
-  if(!LOG.length){alert("Log khaali hai — pehle cases ADD karo.");return;}
-  const head=["Date","CaseID","Eye","Procedure","PreOp_Snellen","PostOp_Snellen","LinesGained","WHO_NPCB"];
-  const rows=LOG.map(c=>[c.dt||"",c.pid,c.eye,c.proc,c.preSnellen||c.pre,c.postSnellen||c.post,c.lines,whoName(c.who)].join("\t"));
-  const tsv="\uFEFF"+head.join("\t")+"\n"+rows.join("\n");
-  const blob=new Blob([tsv],{type:"text/tab-separated-values;charset=utf-8"});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url; a.download="Dr_Shroffs_Charity_Eye_Hospital_Audit_"+new Date().toISOString().slice(0,10)+".xls";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),500);
-  const b=$("#csvBtn"); b.textContent="✓ DOWNLOADED"; setTimeout(()=>b.textContent="⬇ EXPORT CSV",1400);
+$("#csvBtn").onclick = () => {
+  if (!LOG.length) {
+    alert("Log khaali hai — pehle cases ADD karo.\n\nSteps:\n1. Pre-op aur Post-op vision enter karo\n2. '＋ ADD CASE TO LOG' button dabao\n3. Phir '⬇ EXPORT CSV' dabao");
+    return;
+  }
+  
+  // Headers
+  const headers = ["Date", "CaseID", "Eye", "Procedure", "PreOp_Snellen", "PostOp_Snellen", "LinesGained", "WHO_NPCB"];
+  
+  // Data rows - TAB separated
+  const rows = LOG.map(c => {
+    return [
+      c.dt || "",
+      c.pid || "",
+      c.eye || "",
+      c.proc || "",
+      c.preSnellen || c.pre || "",
+      c.postSnellen || c.post || "",
+      c.lines || 0,
+      whoName(c.who) || ""
+    ].join("\t");  // TAB character
+  });
+  
+  // Combine with TAB separator
+  const tsvContent = headers.join("\t") + "\n" + rows.join("\n");
+  
+  // Create file with BOM for Excel compatibility
+  const blob = new Blob(["\uFEFF" + tsvContent], { type: "text/tab-separated-values;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  
+  // Download
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Dr_Shroffs_Charity_Eye_Hospital_Audit_" + new Date().toISOString().slice(0, 10) + ".tsv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  // Button feedback
+  const b = $("#csvBtn");
+  b.textContent = "✓ DOWNLOADED";
+  setTimeout(() => b.textContent = "⬇ EXPORT CSV", 2000);
 };
 $("#clearLogBtn").onclick=()=>{if(confirm("Poora audit log clear karein? (Clear entire audit log?)")){LOG=[];saveLog();renderLog();}};
 function buildReport(lines,dLM,letters,st){
