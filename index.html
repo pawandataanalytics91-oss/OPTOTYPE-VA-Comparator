@@ -712,14 +712,16 @@ $("#addLogBtn").onclick=()=>{
 };
 $("#csvBtn").onclick = () => {
   if (!LOG.length) {
-    alert("Log khaali hai — pehle cases ADD karo.");
+    alert("Log khaali hai — pehle cases ADD karo.\n\nSteps:\n1. Pre-op aur Post-op vision enter karo\n2. '＋ ADD CASE TO LOG' button dabao\n3. Phir '⬇ EXPORT CSV' dabao");
     return;
   }
   
-  let csvContent = "Date\tCaseID\tEye\tProcedure\tPreOp_Snellen\tPostOp_Snellen\tLinesGained\tWHO_NPCB\n";
+  // Headers
+  const headers = ["Date", "CaseID", "Eye", "Procedure", "PreOp_Snellen", "PostOp_Snellen", "LinesGained", "WHO_NPCB"];
   
-  LOG.forEach(c => {
-    csvContent += [
+  // Data rows - TAB separated (Excel friendly)
+  const rows = LOG.map(c => {
+    return [
       c.dt || "",
       c.pid || "",
       c.eye || "",
@@ -728,10 +730,17 @@ $("#csvBtn").onclick = () => {
       c.postSnellen || c.post || "",
       c.lines || 0,
       whoName(c.who) || ""
-    ].join("\t") + "\n";
+    ].join("\t");  // TAB character
   });
   
-  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/tab-separated-values;charset=utf-8" });
+  // Combine with TAB separator
+  const tsvContent = headers.join("\t") + "\n" + rows.join("\n");
+  
+  // Create file with BOM for Excel compatibility
+  const blob = new Blob(["\uFEFF" + tsvContent], { 
+    type: "text/tab-separated-values;charset=utf-8" 
+  });
+  
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -741,6 +750,7 @@ $("#csvBtn").onclick = () => {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
   
+  // Button feedback
   const b = $("#csvBtn");
   b.textContent = "✓ DOWNLOADED";
   setTimeout(() => b.textContent = "⬇ EXPORT CSV", 2000);
