@@ -1,13 +1,13 @@
 {
   "name": "Dr. Shroff's Charity Eye Hospital — OPTOTYPE VA Comparator",
   "short_name": "OPTOTYPE VA",
-  "description": "Before & After Vision Comparison Tool for Eye Care Professionals. Pre-op and post-op visual acuity comparison with WHO/NPCB grading.",
-  "start_url": "./vision-compare.html",
+  "description": "Before & After Vision Comparison Tool for Eye Care Professionals",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#F3F6F1",
   "theme_color": "#0E7A56",
   "orientation": "any",
-  "scope": "./",
+  "scope": "/",
   "icons": [
     {
       "src": "./icon-192.png",
