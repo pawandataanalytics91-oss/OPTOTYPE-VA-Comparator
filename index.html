@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dr. Shroff's Charity Eye Hospital — OPTOTYPE VA Comparator</title>
+<!-- PWA: Manifest aur Theme -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0E7A56">
+<meta name="description" content="Before & After Vision Comparison Tool for Eye Care Professionals">
+
+<!-- Apple/iOS Support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OPTOTYPE VA">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -866,7 +880,38 @@ renderLog();
 recalc(true);
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.12});
 $$(".reveal").forEach(el=>io.observe(el));
+
+// PWA: Service Worker Register karo
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => console.log('✅ Service Worker registered:', reg.scope))
+      .catch((err) => console.log('❌ SW registration failed:', err));
+  });
+}
+
+// PWA: Install Prompt dikhao
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('💾 App install ready!');
+});
+
+// Custom Install Button (agar aap screen par button dikhana chahein)
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choice) => {
+      if (choice.outcome === 'accepted') {
+        console.log('✅ User installed the app');
+      }
+      deferredPrompt = null;
+    });
+  }
+}
 })();
 </script>
 </body>
 </html>
+
